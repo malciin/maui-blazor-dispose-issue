@@ -15,12 +15,17 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddMauiBlazorWebView();
+		builder.Services.AddSingleton<SingletonServiceThatRequiresDispose>();
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
+		var mauiApp = builder.Build();
+
+		mauiApp.Services.GetRequiredService<SingletonServiceThatRequiresDispose>();
+
+		return mauiApp;
 	}
 }
